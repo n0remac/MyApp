@@ -60,9 +60,6 @@ jobs:
       env:
         DIGITALOCEAN_HOST: ${{ secrets.DIGITALOCEAN_HOST }}
       run: |
+        ssh -o StrictHostKeyChecking=no app@${{ env.DIGITALOCEAN_HOST }} 'mkdir -p /home/app/frontend/dist'
         rsync -avz -vv -e "ssh -o StrictHostKeyChecking=no" ./MyApp app@${{ env.DIGITALOCEAN_HOST }}:/home/app/MyApp
         rsync -avz -vv -e "ssh -o StrictHostKeyChecking=no" ./frontend/dist/ app@${{ env.DIGITALOCEAN_HOST }}:/home/app/frontend/dist/
-
-    - name: Restart application
-      run: |
-        ssh -o StrictHostKeyChecking=no app@${{ secrets.DIGITALOCEAN_HOST }} 'sudo systemctl restart myapp'
